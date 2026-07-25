@@ -2,19 +2,19 @@
 
 Reusable **single-elimination** tournament brackets. Vanilla ESM core, optional jQuery adapter, CSS-variable themes. Display-only (read-only) — winners come from your data.
 
-> Evolved from [jquery-brackets](https://github.com/alicamargom/jquery-brackets). This project is framework-agnostic; thin React / Vue / Angular adapters are on the roadmap.
+> Evolved from [jquery-brackets](https://github.com/aliCamargo/jquery-brackets). This project is framework-agnostic; thin React / Vue / Angular adapters are on the roadmap.
 
 ## Install
 
 ```bash
-npm install tournament-brackets
+npm install @ali.camargo/tournament-brackets
 ```
 
 ## Usage (ESM)
 
 ```js
-import { Brackets } from 'tournament-brackets';
-import 'tournament-brackets/style.css';
+import { Brackets } from '@ali.camargo/tournament-brackets';
+import '@ali.camargo/tournament-brackets/style.css';
 
 const el = document.querySelector('#bracket');
 const api = Brackets.create(el, {
@@ -38,15 +38,15 @@ api.destroy();
 ### TypeScript
 
 ```ts
-import { Brackets, create } from 'tournament-brackets';
-import type { BracketsOptions, Match, Player } from 'tournament-brackets/types';
-import 'tournament-brackets/style.css';
+import { Brackets, create } from '@ali.camargo/tournament-brackets';
+import type { BracketsOptions, Match, Player } from '@ali.camargo/tournament-brackets/types';
+import '@ali.camargo/tournament-brackets/style.css';
 
 const options: BracketsOptions = { rounds, theme: 'dark' };
 const api = Brackets.create(el, options);
 ```
 
-Types also ship on the main entry (`import type { BracketsOptions } from 'tournament-brackets'`).
+Types also ship on the main entry (`import type { BracketsOptions } from '@ali.camargo/tournament-brackets'`).
 
 Internals use a layered class architecture (services + controller); the public API above is unchanged.
 
@@ -113,8 +113,8 @@ Players use `id`. Non–power-of-two first rounds are padded with byes.
 
 ```js
 import $ from 'jquery';
-import 'tournament-brackets/jquery';
-import 'tournament-brackets/style.css';
+import '@ali.camargo/tournament-brackets/jquery';
+import '@ali.camargo/tournament-brackets/style.css';
 
 $('.brackets').brackets({
   rounds,
@@ -184,4 +184,4 @@ Active development moved here from **jquery-brackets**. The old repo remains as 
 
 ## Author
 
-* [Ali Camargo](https://github.com/alicamargom)
+* [Ali Camargo](https://github.com/aliCamargo)
