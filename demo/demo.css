@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root {
+  color-scheme: light;
+  --demo-ink: #142033;
+  --demo-muted: #5b6b7c;
+  --demo-paper: #eef2f6;
+  --demo-line: #d5dee8;
+  --demo-accent: #0b6e4f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--demo-ink);
+  background:
+    radial-gradient(ellipse 80% 50% at 10% -10%, #d7efe4 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 100% 0%, #dbe7f5 0%, transparent 50%),
+    var(--demo-paper);
+}
+
+.demo-header {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 1rem;
+}
+
+.demo-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+}
+
+.demo-nav a {
+  color: var(--demo-muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.demo-nav a:hover {
+  color: var(--demo-ink);
+  border-bottom-color: var(--demo-line);
+}
+
+.demo-nav a[aria-current='page'] {
+  color: var(--demo-accent);
+  font-weight: 600;
+  border-bottom-color: var(--demo-accent);
+}
+
+.demo-brand {
+  margin: 0;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.demo-header h1 {
+  margin: 0.35rem 0 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--demo-muted);
+}
+
+.demo-lead {
+  margin: 0.5rem 0 0;
+  max-width: 36rem;
+  color: var(--demo-muted);
+}
+
+.demo-lead code {
+  font-size: 0.85em;
+  color: var(--demo-ink);
+}
+
+.demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  margin-top: 1.25rem;
+  align-items: center;
+}
+
+.demo-controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.demo-controls select {
+  margin-left: 0.35rem;
+  border: 1px solid var(--demo-line);
+  border-radius: 6px;
+  padding: 0.25rem 0.4rem;
+  background: #fff;
+}
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.25rem 3rem;
+  display: grid;
+  gap: 1.5rem;
+}
+
+#bracket {
+  border: 1px solid var(--demo-line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.demo-state {
+  border-top: 1px solid var(--demo-line);
+  padding-top: 1rem;
+}
+
+.demo-state h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+#state {
+  margin: 0;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #101820;
+  color: #d7ffe9;
+  font-size: 0.75rem;
+  overflow: auto;
+  max-height: 280px;
+}

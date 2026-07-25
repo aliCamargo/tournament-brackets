@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.docs/
+.worktrees/
+.DS_Store
+*.log
+coverage/
+package-lock.json
+yarn.lock
