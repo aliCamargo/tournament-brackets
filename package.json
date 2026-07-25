@@ -1,0 +1,64 @@
+{
+  "name": "tournament-brackets",
+  "version": "1.3.0",
+  "type": "module",
+  "packageManager": "pnpm@10.33.2",
+  "description": "Reusable single-elimination tournament brackets — vanilla ESM core with optional jQuery adapter (React/Vue/Angular planned)",
+  "main": "./dist/brackets.umd.cjs",
+  "module": "./dist/brackets.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/brackets.js",
+      "require": "./dist/brackets.umd.cjs"
+    },
+    "./jquery": {
+      "types": "./dist/adapters/jquery.d.ts",
+      "import": "./dist/jquery-adapter.js",
+      "require": "./dist/jquery-adapter.umd.cjs"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts"
+    },
+    "./style.css": "./dist/brackets.css"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite --config vite.demo.config.js",
+    "typecheck": "tsc --noEmit",
+    "build": "vite build && vite build --config vite.jquery.config.js && tsc --emitDeclarationOnly",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "peerDependencies": {
+    "jquery": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "jquery": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/jquery": "^4.0.1",
+    "jquery": "^3.7.1",
+    "jsdom": "^24.0.0",
+    "typescript": "^7.0.2",
+    "vite": "^5.4.0",
+    "vitest": "^2.0.0"
+  },
+  "keywords": [
+    "tournament",
+    "brackets",
+    "single-elimination",
+    "vanilla-js",
+    "jquery"
+  ],
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "Ali Camargo"
+}

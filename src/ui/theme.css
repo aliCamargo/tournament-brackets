@@ -1,0 +1,25 @@
+.jb-theme-default {
+  --jb-bg: #f4f6f8;
+  --jb-surface: #ffffff;
+  --jb-border: #c5ced6;
+  --jb-text: #1a2330;
+  --jb-title: #1a2330;
+  --jb-accent: #0b6e4f;
+  --jb-winner: #0b6e4f;
+  --jb-loser: #8a96a3;
+  --jb-hover-bg: #0b6e4f;
+  --jb-hover-text: #ffffff;
+}
+
+.jb-theme-dark {
+  --jb-bg: #121820;
+  --jb-surface: #1c2430;
+  --jb-border: #3a4656;
+  --jb-text: #e8eef5;
+  --jb-title: #e8eef5;
+  --jb-accent: #3dd68c;
+  --jb-winner: #3dd68c;
+  --jb-loser: #8b98a8;
+  --jb-hover-bg: #3dd68c;
+  --jb-hover-text: #0b1210;
+}

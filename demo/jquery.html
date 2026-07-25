@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Brackets — jQuery Demo</title>
+    <link rel="stylesheet" href="./demo.css" />
+  </head>
+  <body>
+    <header class="demo-header">
+      <nav class="demo-nav" aria-label="Demo variants">
+        <a href="./index.html">Vanilla ESM</a>
+        <a href="./jquery.html" aria-current="page">jQuery adapter</a>
+      </nav>
+      <p class="demo-brand">Brackets</p>
+      <h1>jQuery adapter demo</h1>
+      <p class="demo-lead">
+        Same sample data via
+        <code>$('.brackets').brackets({ … })</code>
+        — instance on
+        <code>$el.data('brackets')</code>.
+      </p>
+      <div class="demo-controls">
+        <label>
+          <input type="checkbox" id="thirdPlace" checked />
+          3rd place
+        </label>
+        <label>
+          <input type="checkbox" id="roundNav" checked />
+          Round nav
+        </label>
+        <label>
+          Theme
+          <select id="theme">
+            <option value="default">Default</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+        <label>
+          Radius
+          <input type="number" id="radius" min="0" max="24" value="8" />
+        </label>
+        <label>
+          Match width
+          <input
+            type="number"
+            id="matchWidth"
+            min="120"
+            max="360"
+            value="200"
+            step="8"
+          />
+        </label>
+      </div>
+    </header>
+
+    <main>
+      <div id="bracket" class="brackets"></div>
+      <section class="demo-state">
+        <h2>State</h2>
+        <pre id="state"></pre>
+      </section>
+    </main>
+
+    <script type="module" src="./jquery-main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,427 @@
+.jb-root {
+  --jb-bg: #f4f6f8;
+  --jb-surface: #ffffff;
+  --jb-border: #c5ced6;
+  --jb-text: #1a2330;
+  --jb-title: #1a2330;
+  --jb-accent: #0b6e4f;
+  --jb-winner: #0b6e4f;
+  --jb-loser: #8a96a3;
+  --jb-hover-bg: #0b6e4f;
+  --jb-hover-text: #ffffff;
+  --jb-radius: 8px;
+  --jb-font: "Segoe UI", system-ui, sans-serif;
+  --jb-col-width: var(--jb-match-width, 168px);
+  --jb-connector-width: 44px;
+  --jb-lead-in-width: 26px;
+  --jb-player-height: 1.85rem;
+  --jb-player-gap: 0;
+  /* Must be >= match card height (badge + 2 players + padding) or rows overlap */
+  --jb-slot-height: 5.9rem;
+  --jb-score-color: var(--jb-text);
+
+  box-sizing: border-box;
+  font-family: var(--jb-font);
+  color: var(--jb-text);
+  background: var(--jb-bg);
+  padding: 1rem;
+}
+
+.jb-root *,
+.jb-root *::before,
+.jb-root *::after {
+  box-sizing: border-box;
+}
+
+.jb-empty {
+  margin: 0;
+  padding: 1.5rem;
+  color: var(--jb-loser);
+}
+
+.jb-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+/* Bracket + 3rd place scroll; round nav stays put above */
+.jb-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  min-width: 0;
+}
+
+.jb-round-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  max-width: 100%;
+  padding: 0.15rem;
+  flex-shrink: 0;
+}
+
+.jb-round-nav__btn {
+  appearance: none;
+  border: 1px solid transparent;
+  background: color-mix(in srgb, var(--jb-border) 35%, var(--jb-bg));
+  color: var(--jb-text);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease;
+}
+
+.jb-round-nav__btn:hover {
+  border-color: var(--jb-border);
+}
+
+.jb-round-nav__btn--active {
+  background: var(--jb-surface);
+  color: var(--jb-text);
+  border-color: color-mix(in srgb, var(--jb-border) 70%, transparent);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--jb-text) 12%, transparent);
+}
+
+.jb-round-nav__btn:focus-visible {
+  outline: 2px solid var(--jb-accent);
+  outline-offset: 2px;
+}
+
+.jb-header {
+  display: grid;
+  align-items: end;
+  margin-bottom: 0;
+  min-width: max-content;
+}
+
+.jb-header__title {
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--jb-title);
+  letter-spacing: 0.02em;
+  padding: 0 0.25rem;
+}
+
+.jb-bracket {
+  display: grid;
+  align-items: stretch;
+  min-width: max-content;
+}
+
+.jb-bracket--scores {
+  --jb-col-width: var(--jb-match-width, 200px);
+  --jb-slot-height: 6.15rem;
+}
+
+.jb-match {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem;
+  align-self: center;
+  width: 100%;
+  z-index: 1;
+  padding: 0.3rem 0.45rem 0.35rem;
+  background: var(--jb-surface);
+  border: 1px solid color-mix(in srgb, var(--jb-border) 80%, transparent);
+  border-radius: calc(var(--jb-radius) + 4px);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--jb-text) 5%, transparent);
+}
+
+.jb-match__badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--jb-loser);
+  letter-spacing: 0.02em;
+  padding: 0 0.1rem;
+  text-transform: none;
+}
+
+.jb-match__badge--in_progress {
+  color: var(--jb-accent);
+}
+
+.jb-match__badge--live {
+  animation: jb-live-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes jb-live-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.72;
+    transform: scale(1.03);
+  }
+}
+
+.jb-match__badge--final {
+  color: var(--jb-title);
+}
+
+.jb-match__badge--retired,
+.jb-match__badge--walkover {
+  color: #b45309;
+}
+
+.jb-match__body {
+  display: flex;
+  flex-direction: column;
+  border: none;
+  border-radius: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+.jb-match--champion {
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--jb-text) 5%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--jb-winner) 25%, transparent);
+}
+
+.jb-match--champion .jb-match__badge {
+  color: var(--jb-title);
+  font-size: 0.72rem;
+}
+
+.jb-third-place {
+  display: grid;
+  align-items: start;
+  row-gap: 0.4rem;
+  min-width: max-content;
+  padding-top: 0.25rem;
+  border-top: 1px dashed color-mix(in srgb, var(--jb-border) 80%, transparent);
+}
+
+.jb-third-place__title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--jb-title);
+  letter-spacing: 0.02em;
+}
+
+.jb-match--third-place {
+  width: 100%;
+}
+
+.jb-player {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.35rem;
+  min-height: var(--jb-player-height);
+  padding: 0.15rem 0.4rem 0.15rem 0;
+  background: transparent;
+  border: none;
+  border-radius: calc(var(--jb-radius) * 0.6);
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.jb-player--bye {
+  opacity: 0.45;
+  font-style: italic;
+  color: var(--jb-loser);
+  padding-left: 0.7rem;
+}
+
+.jb-player--winner {
+  font-weight: 600;
+  color: var(--jb-text);
+}
+
+.jb-enter {
+  animation: jb-enter 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--jb-enter-delay, 0ms);
+}
+
+@keyframes jb-enter {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.jb-connector.jb-enter {
+  animation-name: jb-enter-fade;
+}
+
+@keyframes jb-enter-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jb-enter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .jb-match__badge--live {
+    animation: none;
+  }
+}
+
+.jb-player--loser {
+  color: var(--jb-loser);
+}
+
+.jb-player__image {
+  flex: 0 0 1rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 2px;
+  object-fit: cover;
+  display: block;
+  background: color-mix(in srgb, var(--jb-border) 40%, var(--jb-surface));
+}
+
+.jb-player__image--default {
+  display: grid;
+  place-items: center;
+  color: var(--jb-loser);
+}
+
+.jb-player__image--default svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.jb-player__mark {
+  flex: 0 0 0.7rem;
+  width: 0.7rem;
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  border: none;
+  border-radius: calc(var(--jb-radius) * 0.5) 0 0 calc(var(--jb-radius) * 0.5);
+}
+
+.jb-player__mark--on::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 3.5px 0 3.5px 5px;
+  border-color: transparent transparent transparent var(--jb-text);
+}
+
+.jb-player__name {
+  color: inherit;
+  text-decoration: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.875rem;
+}
+
+.jb-player__score {
+  flex: 0 0 auto;
+  min-width: 1.1rem;
+  margin-left: auto;
+  text-align: right;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+  letter-spacing: 0.04em;
+}
+
+.jb-player__score--sets {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  max-width: 6.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jb-score__period {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+
+.jb-score__extra {
+  font-size: 0.65em;
+  font-weight: 600;
+  line-height: 0;
+  margin-left: 0.05em;
+  vertical-align: super;
+}
+
+.jb-player.jb-player--hover {
+  background: color-mix(in srgb, var(--jb-hover-bg) 12%, var(--jb-surface));
+  color: var(--jb-text);
+}
+
+/* ]-shaped connector spanning the two feeder match rows */
+.jb-connector {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.jb-connector::before {
+  content: '';
+  position: absolute;
+  top: 25%;
+  bottom: 25%;
+  left: 0;
+  right: 50%;
+  border: 1px solid var(--jb-border);
+  border-left: none;
+  border-radius: 0 var(--jb-radius) var(--jb-radius) 0;
+}
+
+.jb-connector::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: 0;
+  border-top: 1px solid var(--jb-border);
+}
+
+/* Incoming stub when earlier rounds are off-screen (round-nav slice) */
+.jb-connector--lead-in::before {
+  display: none;
+}
+
+.jb-connector--lead-in::after {
+  left: 0;
+  right: 0;
+}
