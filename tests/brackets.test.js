@@ -91,6 +91,31 @@ describe('Brackets.create', () => {
     expect(el.querySelectorAll('.jb-player').length).toBeGreaterThan(0);
   });
 
+  it('reuses the root when rounds or the viewed round changes', () => {
+    const api = Brackets.create(el, {
+      rounds: sampleRounds,
+      roundNav: true,
+    });
+    const root = el.querySelector('.jb-root');
+
+    api.setRounds(sampleRounds);
+    expect(el.querySelector('.jb-root')).toBe(root);
+
+    api.setViewFromRound(1);
+    expect(el.querySelector('.jb-root')).toBe(root);
+  });
+
+  it('clears mount siblings when reusing the root for paint', () => {
+    const api = Brackets.create(el, { rounds: sampleRounds });
+    const sibling = document.createElement('aside');
+    el.appendChild(sibling);
+
+    api.setRounds(sampleRounds);
+
+    expect(el.children).toHaveLength(1);
+    expect(el.querySelector('aside')).toBeNull();
+  });
+
   it('mounts through the controller with the same public API', () => {
     const api = BracketsController.mount(el, { rounds: sampleRounds });
 
@@ -433,5 +458,58 @@ describe('Brackets.create', () => {
     });
     expect(el.querySelector('.jb-player__image')).toBeNull();
     expect(el.querySelector('.jb-bracket--images')).toBeNull();
+  });
+
+  it('tucks third-place match under the Final column inside the bracket grid', () => {
+    const four = [
+      [
+        {
+          player1: { name: 'A', id: 'a', winner: true },
+          player2: { name: 'B', id: 'b' },
+        },
+        {
+          player1: { name: 'C', id: 'c', winner: true },
+          player2: { name: 'D', id: 'd' },
+        },
+      ],
+      [
+        {
+          player1: { name: 'A', id: 'a' },
+          player2: { name: 'C', id: 'c' },
+        },
+      ],
+    ];
+    Brackets.create(el, { rounds: four, thirdPlace: true });
+    const bracket = el.querySelector('.jb-bracket');
+    const stack = el.querySelector('.jb-final-stack');
+    const third = el.querySelector('.jb-third-place');
+    const finalMatch = el.querySelector('.jb-match--champion');
+    expect(bracket).toBeTruthy();
+    expect(stack).toBeTruthy();
+    expect(third).toBeTruthy();
+    expect(finalMatch).toBeTruthy();
+    expect(bracket.contains(stack)).toBe(true);
+    expect(stack.contains(finalMatch)).toBe(true);
+    expect(stack.contains(third)).toBe(true);
+    expect(stack.querySelector('.jb-final-stack__anchor')).toBeTruthy();
+    expect(bracket.classList.contains('jb-bracket--third-place')).toBe(true);
+    expect(third.querySelector('.jb-match--third-place')).toBeTruthy();
+    const title = third.querySelector('.jb-third-place__title');
+    expect(title?.classList.contains('jb-enter')).toBe(true);
+    expect(title?.style.getPropertyValue('--jb-enter-delay')).toMatch(/ms$/);
+    // Final and 3rd share the Final column cell (stacked, not a bottom footer row).
+    expect(stack.style.gridColumn).toBeTruthy();
+    expect(finalMatch.style.gridColumn).toBe('');
+    expect(third.style.gridRow).toBe('');
+  });
+
+  it('includes viewFromRound on onChange payloads', () => {
+    const onChange = vi.fn();
+    Brackets.create(el, { rounds: sampleRounds, onChange });
+    expect(onChange).toHaveBeenCalled();
+    const payload = onChange.mock.calls.at(-1)[0];
+    expect(payload).toHaveProperty('viewFromRound');
+    expect(payload.viewFromRound).toBe(0);
+    expect(payload.rounds[0][0]).toHaveProperty('slots');
   });
 });
