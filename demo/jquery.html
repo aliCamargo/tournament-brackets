@@ -57,6 +57,17 @@
 
     <main>
       <div id="bracket" class="brackets"></div>
+      <section class="demo-rounds-editor">
+        <h2>Rounds JSON</h2>
+        <textarea id="roundsJson" spellcheck="false" aria-label="Rounds JSON"></textarea>
+        <div class="demo-rounds-actions">
+          <button type="button" class="demo-btn" id="applyRounds">Apply</button>
+          <button type="button" class="demo-btn demo-btn--secondary" id="resetRounds">
+            Reset
+          </button>
+        </div>
+        <p class="demo-rounds-error" id="roundsError" role="alert"></p>
+      </section>
       <section class="demo-state">
         <h2>State</h2>
         <pre id="state"></pre>

@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import '../src/adapters/jquery.adapter';
-import { rounds } from './sample-rounds.js';
+import { rounds as sampleRounds } from './sample-rounds.js';
+import { formatRounds, parseRoundsJson } from './rounds-editor.js';
 
 const $mount = $('#bracket');
 const $state = $('#state');
@@ -9,6 +10,36 @@ const $roundNav = $('#roundNav');
 const $theme = $('#theme');
 const $radius = $('#radius');
 const $matchWidth = $('#matchWidth');
+const $roundsJson = $('#roundsJson');
+const $applyRounds = $('#applyRounds');
+const $resetRounds = $('#resetRounds');
+const $roundsError = $('#roundsError');
+
+let currentRounds = sampleRounds;
+
+$roundsJson.val(formatRounds(sampleRounds));
+
+function setRoundsError(message) {
+  $roundsError.text(message || '');
+}
+
+function applyRoundsFromEditor() {
+  const result = parseRoundsJson($roundsJson.val());
+  if (!result.ok) {
+    setRoundsError(result.error);
+    return false;
+  }
+  setRoundsError('');
+  currentRounds = result.rounds;
+  const api = $mount.data('brackets');
+  if (api) {
+    api.setRounds(currentRounds);
+    $state.text(JSON.stringify(api.getState(), null, 2));
+  } else {
+    mountBracket();
+  }
+  return true;
+}
 
 function mountBracket() {
   const thirdPlace = $thirdPlace.prop('checked');
@@ -23,7 +54,7 @@ function mountBracket() {
     .attr('data-match-width', String(matchWidth));
 
   $mount.brackets({
-    rounds,
+    rounds: currentRounds,
     titles: true,
     thirdPlace,
     roundNav,
@@ -43,6 +74,14 @@ function mountBracket() {
   const api = $mount.data('brackets');
   $state.text(JSON.stringify(api.getState(), null, 2));
 }
+
+$applyRounds.on('click', () => {
+  applyRoundsFromEditor();
+});
+$resetRounds.on('click', () => {
+  $roundsJson.val(formatRounds(sampleRounds));
+  applyRoundsFromEditor();
+});
 
 $thirdPlace.on('change', mountBracket);
 $roundNav.on('change', mountBracket);
