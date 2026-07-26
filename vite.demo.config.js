@@ -3,9 +3,11 @@ import { resolve } from 'path';
 
 export default defineConfig({
   root: resolve(__dirname, 'demo'),
+  esbuild: {
+    jsx: 'automatic',
+  },
   server: {
     fs: {
-      // Allow importing ../src from the demo root
       allow: [resolve(__dirname)],
     },
   },

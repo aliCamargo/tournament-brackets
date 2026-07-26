@@ -2,7 +2,7 @@
 
 Reusable **single-elimination** tournament brackets. Vanilla ESM core, optional jQuery adapter, CSS-variable themes. Display-only (read-only) — winners come from your data.
 
-> Evolved from [jquery-brackets](https://github.com/aliCamargo/jquery-brackets). This project is framework-agnostic; thin React / Vue / Angular adapters are on the roadmap.
+> Evolved from [jquery-brackets](https://github.com/aliCamargo/jquery-brackets). This project is framework-agnostic; a thin React adapter is available, with Vue / Angular on the roadmap.
 
 ## Install
 
@@ -34,6 +34,8 @@ api.getState();
 api.setRounds(rounds);
 api.destroy();
 ```
+
+Live `setRounds` updates reuse the existing `.jb-root` element and replace its contents. Any sibling nodes in the mount element are cleared during the paint.
 
 ### TypeScript
 
@@ -127,6 +129,39 @@ const api = $('.brackets').data('brackets');
 
 See also `demo/jquery.html`.
 
+## Usage (React)
+
+Peer dependencies: `react` and `react-dom` >= 17.
+
+```tsx
+import { useRef } from 'react';
+import { Brackets } from '@ali.camargo/tournament-brackets/react';
+import type { BracketsApi } from '@ali.camargo/tournament-brackets';
+import '@ali.camargo/tournament-brackets/style.css';
+
+function Tournament({ rounds }) {
+  const apiRef = useRef<BracketsApi>(null);
+
+  return (
+    <Brackets
+      ref={apiRef}
+      rounds={rounds}
+      theme="dark"
+      titles
+      thirdPlace
+      roundNav
+      onChange={(state) => console.log(state)}
+    />
+  );
+}
+```
+
+Props mirror vanilla `BracketsOptions`, plus `className` / `style` on the host element. The `ref` exposes `getState`, `setRounds`, `setViewFromRound`, and `destroy`.
+
+Keep `rounds` referentially stable (for example, memoize derived data) when `onChange` updates parent state; a new `rounds` identity triggers a live `setRounds` update. `viewFromRound` is an initial and imperative-synced value rather than a fully controlled prop: round-nav clicks may diverge from it until you pass a new value or call `setViewFromRound` through the ref.
+
+See also `demo/react.html`.
+
 ## Options
 
 | Option | Default | Description |
@@ -166,7 +201,7 @@ Short left-to-right entrance on paint (including round-nav changes). Matches wit
 ```bash
 pnpm install
 pnpm test
-pnpm dev     # / = vanilla ESM, /jquery.html = jQuery adapter
+pnpm dev     # / = vanilla, /jquery.html = jQuery, /react.html = React
 pnpm build   # dist/ ESM + UMD + CSS
 ```
 
@@ -174,10 +209,9 @@ pnpm build   # dist/ ESM + UMD + CSS
 
 Thin framework adapters on the same core (no UI rewrite):
 
-1. React  
-2. Vue  
-3. Angular  
-
+1. ~~React~~ — available via `@ali.camargo/tournament-brackets/react`
+2. Vue
+3. Angular
 ## Predecessor
 
 Active development moved here from **jquery-brackets**. The old repo remains as a historical reference.

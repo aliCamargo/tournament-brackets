@@ -397,11 +397,16 @@ export class BracketRenderer {
       { leadIn },
     );
 
+    const finalIdx =
+      BracketModelHelper.getFinalRoundIndex(rounds) ?? rounds.length - 2;
+    const showThirdPlace = !!(state.thirdPlace && finalIdx >= sliceStart);
+
     const container = document.createElement('div');
     container.className = 'jb-bracket';
     if (scoresVisible) container.classList.add('jb-bracket--scores');
     if (showImages) container.classList.add('jb-bracket--images');
     if (leadIn) container.classList.add('jb-bracket--lead-in');
+    if (showThirdPlace) container.classList.add('jb-bracket--third-place');
     container.style.gridTemplateColumns = colTemplate.join(' ');
     container.style.gridTemplateRows = `repeat(${firstCount}, var(--jb-slot-height))`;
     container.style.setProperty('--jb-first-count', String(firstCount));
@@ -425,17 +430,54 @@ export class BracketRenderer {
         (BracketModelHelper.getFinalRoundIndex(rounds) ?? rounds.length - 1);
 
       round.forEach((match, m) => {
+        const isChampion = isFinalCol && round.length === 1;
         const matchEl = BracketRenderer.createMatchEl(match, {
-          champion: isFinalCol && round.length === 1,
+          champion: isChampion,
           showScores: scoresVisible,
           showImages,
           labels,
           enterDelayMs: BracketRenderer.enterDelayMs(rel, m),
         });
-        matchEl.style.gridColumn = String(
+        const gridColumn = String(
           BracketRenderer.roundColumn(rel, leadInOffset),
         );
-        matchEl.style.gridRow = `${m * span + 1} / ${(m + 1) * span + 1}`;
+        const gridRow = `${m * span + 1} / ${(m + 1) * span + 1}`;
+
+        // Final stays vertically centered; 3rd place hangs a few px under it.
+        if (isChampion && showThirdPlace && state.thirdPlace) {
+          const stack = document.createElement('div');
+          stack.className = 'jb-final-stack';
+          stack.style.gridColumn = gridColumn;
+          stack.style.gridRow = gridRow;
+
+          const anchor = document.createElement('div');
+          anchor.className = 'jb-final-stack__anchor';
+          anchor.appendChild(matchEl);
+
+          const third = document.createElement('div');
+          third.className = 'jb-third-place';
+          const thirdDelay = BracketRenderer.enterDelayMs(rel, 0);
+          const title = document.createElement('div');
+          title.className = 'jb-third-place__title';
+          title.textContent = labels.thirdPlace || '3rd Place';
+          BracketRenderer.applyEnter(title, thirdDelay);
+          third.appendChild(title);
+          third.appendChild(
+            BracketRenderer.createMatchEl(state.thirdPlace, {
+              showScores: scoresVisible,
+              showImages,
+              labels,
+              enterDelayMs: thirdDelay,
+            }),
+          );
+          anchor.appendChild(third);
+          stack.appendChild(anchor);
+          container.appendChild(stack);
+          return;
+        }
+
+        matchEl.style.gridColumn = gridColumn;
+        matchEl.style.gridRow = gridRow;
         container.appendChild(matchEl);
       });
 
@@ -461,36 +503,6 @@ export class BracketRenderer {
     const scroll = document.createElement('div');
     scroll.className = 'jb-scroll';
     scroll.appendChild(container);
-
-    const finalIdx =
-      BracketModelHelper.getFinalRoundIndex(rounds) ?? rounds.length - 2;
-    if (state.thirdPlace && finalIdx >= sliceStart) {
-      const relFinal = visibleSource.findIndex((v) => v.absolute === finalIdx);
-      const third = document.createElement('div');
-      third.className = 'jb-third-place';
-      third.style.gridTemplateColumns = colTemplate.join(' ');
-
-      const title = document.createElement('div');
-      title.className = 'jb-third-place__title';
-      title.textContent = labels.thirdPlace || '3rd Place';
-      title.style.gridColumn = String(
-        BracketRenderer.roundColumn(Math.max(relFinal, 0), leadInOffset),
-      );
-      third.appendChild(title);
-
-      const matchEl = BracketRenderer.createMatchEl(state.thirdPlace, {
-        showScores: scoresVisible,
-        showImages,
-        labels,
-        enterDelayMs: BracketRenderer.enterDelayMs(Math.max(relFinal, 0), 0),
-      });
-      matchEl.style.gridColumn = String(
-        BracketRenderer.roundColumn(Math.max(relFinal, 0), leadInOffset),
-      );
-      third.appendChild(matchEl);
-
-      scroll.appendChild(third);
-    }
 
     layout.appendChild(scroll);
     root.appendChild(layout);

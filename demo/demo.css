@@ -112,7 +112,8 @@ main {
   gap: 1.5rem;
 }
 
-#bracket {
+#bracket,
+#root .jb-root {
   border: 1px solid var(--demo-line);
   border-radius: 12px;
   overflow: hidden;
@@ -129,7 +130,8 @@ main {
   font-size: 0.95rem;
 }
 
-#state {
+#state,
+.demo-state pre {
   margin: 0;
   padding: 1rem;
   border-radius: 8px;

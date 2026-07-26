@@ -166,7 +166,6 @@ export class BracketsController {
   };
 
   private paint(): void {
-    this.element.replaceChildren();
     const tree = BracketRenderer.render(this.state, {
       theme: this.state.theme,
       titles: this.state.titles,
@@ -175,13 +174,35 @@ export class BracketsController {
       roundNav: this.state.roundNav,
       viewFromRound: this.state.viewFromRound,
     });
+
+    const existing = this.element.firstElementChild;
+    if (
+      existing instanceof HTMLElement &&
+      existing.classList.contains('jb-root')
+    ) {
+      existing.className = tree.className;
+      existing.replaceChildren(...tree.childNodes);
+      if (this.radiusCss != null) {
+        existing.style.setProperty('--jb-radius', this.radiusCss);
+      } else {
+        existing.style.removeProperty('--jb-radius');
+      }
+      if (this.matchWidthCss != null) {
+        existing.style.setProperty('--jb-match-width', this.matchWidthCss);
+      } else {
+        existing.style.removeProperty('--jb-match-width');
+      }
+      this.element.replaceChildren(existing);
+      return;
+    }
+
     if (this.radiusCss != null) {
       tree.style.setProperty('--jb-radius', this.radiusCss);
     }
     if (this.matchWidthCss != null) {
       tree.style.setProperty('--jb-match-width', this.matchWidthCss);
     }
-    this.element.appendChild(tree);
+    this.element.replaceChildren(tree);
   }
 
   private readonly setViewFromRound = (index: number): void => {
@@ -219,10 +240,7 @@ export class BracketsController {
       viewFromRound: Math.min(this.state.viewFromRound, max),
     };
     this.paint();
-    this.bus.emit(
-      'change',
-      this.bracketService.getSerializableState(this.state),
-    );
+    this.bus.emit('change', this.getState());
   };
 
   private readonly getState = (): BracketsState => ({

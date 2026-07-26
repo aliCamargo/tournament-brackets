@@ -52,6 +52,7 @@
   flex-direction: column;
   gap: 1.25rem;
   overflow-x: auto;
+  overflow-y: visible;
   -webkit-overflow-scrolling: touch;
   min-width: 0;
 }
@@ -124,6 +125,14 @@
 .jb-bracket--scores {
   --jb-col-width: var(--jb-match-width, 200px);
   --jb-slot-height: 6.15rem;
+}
+
+/* Absolute 3rd-place hangs under Final — grow the bracket so it isn’t clipped. */
+.jb-bracket--third-place {
+  --jb-third-place-gap: 30px;
+  padding-bottom: calc(
+    var(--jb-third-place-gap) + var(--jb-slot-height) + 2.75rem
+  );
 }
 
 .jb-match {
@@ -199,13 +208,44 @@
   font-size: 0.72rem;
 }
 
+/* Final centered in its column; 3rd place hangs below without shifting Final */
+.jb-final-stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  align-self: stretch;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  z-index: 1;
+  overflow: visible;
+}
+
+.jb-final-stack__anchor {
+  position: relative;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.jb-final-stack__anchor > .jb-match {
+  align-self: stretch;
+  width: 100%;
+}
+
+/* Out of flow so Final stays on the bracket midline */
 .jb-third-place {
-  display: grid;
-  align-items: start;
-  row-gap: 0.4rem;
-  min-width: max-content;
-  padding-top: 0.25rem;
-  border-top: 1px dashed color-mix(in srgb, var(--jb-border) 80%, transparent);
+  position: absolute;
+  top: calc(100% + var(--jb-third-place-gap, 20px));
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.25rem;
+  width: 100%;
+  min-width: 0;
+  z-index: 2;
 }
 
 .jb-third-place__title {
@@ -218,6 +258,7 @@
 
 .jb-match--third-place {
   width: 100%;
+  align-self: stretch;
 }
 
 .jb-player {
@@ -327,7 +368,7 @@
 }
 
 .jb-player__mark--on::after {
-  content: '';
+  content: "";
   width: 0;
   height: 0;
   border-style: solid;
@@ -396,7 +437,7 @@
 }
 
 .jb-connector::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 25%;
   bottom: 25%;
@@ -408,7 +449,7 @@
 }
 
 .jb-connector::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
