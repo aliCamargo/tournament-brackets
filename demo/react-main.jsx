@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { render } from 'react-dom';
 import { Brackets } from '../src/adapters/react.adapter';
-import { rounds } from './sample-rounds.js';
+import { rounds as sampleRounds } from './sample-rounds.js';
+import { formatRounds, parseRoundsJson } from './rounds-editor.js';
 import '../src/ui/theme.css';
 
 function App() {
@@ -11,12 +12,36 @@ function App() {
   const [roundNav, setRoundNav] = useState(true);
   const [radius, setRadius] = useState(8);
   const [matchWidth, setMatchWidth] = useState(200);
+  const [rounds, setRounds] = useState(sampleRounds);
+  const [draftJson, setDraftJson] = useState(() => formatRounds(sampleRounds));
+  const [roundsError, setRoundsError] = useState('');
   const [stateJson, setStateJson] = useState('');
 
   const syncState = () => {
     const api = apiRef.current;
     if (!api) return;
     setStateJson(JSON.stringify(api.getState(), null, 2));
+  };
+
+  useEffect(() => {
+    syncState();
+  }, [rounds, theme, thirdPlace, roundNav, radius, matchWidth]);
+
+  const applyRoundsFromEditor = () => {
+    const result = parseRoundsJson(draftJson);
+    if (!result.ok) {
+      setRoundsError(result.error);
+      return;
+    }
+    setRoundsError('');
+    setRounds(result.rounds);
+  };
+
+  const resetRounds = () => {
+    const formatted = formatRounds(sampleRounds);
+    setDraftJson(formatted);
+    setRoundsError('');
+    setRounds(sampleRounds);
   };
 
   return (
@@ -79,6 +104,30 @@ function App() {
         onChange={syncState}
         onRoundChange={syncState}
       />
+      <section className="demo-rounds-editor">
+        <h2>Rounds JSON</h2>
+        <textarea
+          spellCheck={false}
+          aria-label="Rounds JSON"
+          value={draftJson}
+          onChange={(e) => setDraftJson(e.target.value)}
+        />
+        <div className="demo-rounds-actions">
+          <button type="button" className="demo-btn" onClick={applyRoundsFromEditor}>
+            Apply
+          </button>
+          <button
+            type="button"
+            className="demo-btn demo-btn--secondary"
+            onClick={resetRounds}
+          >
+            Reset
+          </button>
+        </div>
+        <p className="demo-rounds-error" role="alert">
+          {roundsError}
+        </p>
+      </section>
       <section className="demo-state">
         <h2>State</h2>
         <pre id="state">{stateJson}</pre>

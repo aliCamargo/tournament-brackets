@@ -2,6 +2,8 @@
 
 Reusable **single-elimination** tournament brackets. Vanilla ESM core, optional jQuery adapter, CSS-variable themes. Display-only (read-only) — winners come from your data.
 
+**Live demo:** [alicamargo.github.io/tournament-brackets](https://alicamargo.github.io/tournament-brackets/) ([jQuery](https://alicamargo.github.io/tournament-brackets/jquery.html) · [React](https://alicamargo.github.io/tournament-brackets/react.html))
+
 > Evolved from [jquery-brackets](https://github.com/aliCamargo/jquery-brackets). This project is framework-agnostic; a thin React adapter is available, with Vue / Angular on the roadmap.
 
 ## Install
@@ -127,7 +129,7 @@ $('.brackets').brackets({
 const api = $('.brackets').data('brackets');
 ```
 
-See also `demo/jquery.html`.
+See the [jQuery demo](https://alicamargo.github.io/tournament-brackets/jquery.html) (or `demo/jquery.html` locally).
 
 ## Usage (React)
 
@@ -160,7 +162,7 @@ Props mirror vanilla `BracketsOptions`, plus `className` / `style` on the host e
 
 Keep `rounds` referentially stable (for example, memoize derived data) when `onChange` updates parent state; a new `rounds` identity triggers a live `setRounds` update. `viewFromRound` is an initial and imperative-synced value rather than a fully controlled prop: round-nav clicks may diverge from it until you pass a new value or call `setViewFromRound` through the ref.
 
-See also `demo/react.html`.
+See the [React demo](https://alicamargo.github.io/tournament-brackets/react.html) (or `demo/react.html` locally).
 
 ## Options
 
@@ -201,9 +203,11 @@ Short left-to-right entrance on paint (including round-nav changes). Matches wit
 ```bash
 pnpm install
 pnpm test
-pnpm dev     # / = vanilla, /jquery.html = jQuery, /react.html = React
-pnpm build   # dist/ ESM + UMD + CSS
+pnpm dev          # / = vanilla, /jquery.html = jQuery, /react.html = React
+pnpm build        # dist/ ESM + UMD + CSS
+pnpm build:demo   # static demo site (GitHub Pages)
 ```
+
 
 ## Roadmap
 
