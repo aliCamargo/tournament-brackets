@@ -1,5 +1,7 @@
 node_modules/
 dist/
+.ngc-out/
+.demo-ngc/
 demo-dist/
 .docs/
 .worktrees/
