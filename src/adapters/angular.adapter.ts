@@ -146,8 +146,12 @@ export class BracketsComponent
       roundNav: this.roundNav,
       viewFromRound: this.viewFromRound,
       labels: this.labels ?? undefined,
-      onChange: (state) => this.change.emit(state),
-      onRoundChange: (index) => this.roundChange.emit(index),
+      onChange: (state) => {
+        queueMicrotask(() => this.change.emit(state));
+      },
+      onRoundChange: (index) => {
+        queueMicrotask(() => this.roundChange.emit(index));
+      },
     });
   }
 
