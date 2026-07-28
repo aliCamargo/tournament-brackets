@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import { resolve, dirname } from 'path';
+import angular from '@analogjs/vite-plugin-angular';
 
 function ngcCssFromSrc() {
   const ngcRoot = resolve(__dirname, '.demo-ngc');
@@ -20,8 +21,32 @@ function ngcCssFromSrc() {
   };
 }
 
+function angularDemoHtmlEntry(command) {
+  return {
+    name: 'angular-demo-html-entry',
+    transformIndexHtml(html) {
+      if (command === 'build') {
+        return html.replace(
+          './angular-main.ts',
+          '../.demo-ngc/demo/angular-main.js',
+        );
+      }
+      return html;
+    },
+  };
+}
+
 export default defineConfig(({ command }) => ({
-  plugins: [ngcCssFromSrc()],
+  plugins: [
+    ...(command === 'serve'
+      ? [
+          angular({
+            tsconfig: resolve(__dirname, 'tsconfig.demo-ngc.json'),
+          }),
+        ]
+      : [ngcCssFromSrc()]),
+    angularDemoHtmlEntry(command),
+  ],
   root: resolve(__dirname, 'demo'),
   base: command === 'build' ? '/tournament-brackets/' : '/',
   server: {
@@ -39,6 +64,11 @@ export default defineConfig(({ command }) => ({
     },
   },
   optimizeDeps: {
-    include: ['@angular/core', '@angular/platform-browser', '@angular/common'],
+    include: [
+      '@angular/compiler',
+      '@angular/core',
+      '@angular/platform-browser',
+      '@angular/common',
+    ],
   },
 }));

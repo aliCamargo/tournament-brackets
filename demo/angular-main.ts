@@ -1,7 +1,9 @@
-import { Component, ViewChild, type AfterViewInit } from '@angular/core';
+import 'zone.js';
+import '@angular/compiler';
+import { Component, ViewChild } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { BracketsComponent } from '../src/adapters/angular.adapter';
-import type { RoundsInput } from '../src/types';
+import type { BracketsState, RoundsInput } from '../src/types';
 import { BracketsTheme } from '../src/types';
 import { rounds as sampleRounds } from './sample-rounds.js';
 import { formatRounds, parseRoundsJson } from './rounds-editor.js';
@@ -67,8 +69,8 @@ import '../src/ui/theme.css';
         [roundNav]="roundNav"
         [radius]="radius"
         [matchWidth]="matchWidth"
-        (change)="syncState()"
-        (roundChange)="syncState()"
+        (change)="onBracketsChange($event)"
+        (roundChange)="onRoundChange()"
       />
       <section class="demo-rounds-editor">
         <h2>Rounds JSON</h2>
@@ -99,7 +101,7 @@ import '../src/ui/theme.css';
     </div>
   `,
 })
-class AppComponent implements AfterViewInit {
+class AppComponent {
   @ViewChild(BracketsComponent) brackets!: BracketsComponent;
 
   theme: BracketsTheme = BracketsTheme.Default;
@@ -112,8 +114,12 @@ class AppComponent implements AfterViewInit {
   roundsError = '';
   stateJson = '';
 
-  ngAfterViewInit(): void {
-    queueMicrotask(() => this.syncState());
+  onBracketsChange(state: BracketsState): void {
+    this.stateJson = JSON.stringify(state, null, 2);
+  }
+
+  onRoundChange(): void {
+    this.syncState();
   }
 
   syncState(): void {

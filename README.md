@@ -246,8 +246,7 @@ Short left-to-right entrance on paint (including round-nav changes). Matches wit
 ```bash
 pnpm install
 pnpm test
-pnpm dev          # vanilla, jQuery, React demos
-pnpm dev:angular  # Angular demo (runs ngc for demo/angular-main.ts first)
+pnpm dev          # vanilla, jQuery, React, and Angular demos (/angular.html)
 pnpm build        # dist/ ESM + UMD + CSS
 pnpm build:demo   # static demo site (GitHub Pages)
 ```

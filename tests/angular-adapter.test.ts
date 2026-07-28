@@ -54,13 +54,14 @@ describe('Angular Brackets adapter', () => {
     expect(fixture.nativeElement.textContent).toContain('B');
   });
 
-  it('emits change once when mounting with rounds', () => {
+  it('emits change once when mounting with rounds', async () => {
     const onChange = vi.fn();
     fixture = TestBed.createComponent(BracketsComponent);
     component = fixture.componentInstance;
     component.rounds = sampleRounds;
     component.change.subscribe(onChange);
     fixture.detectChanges();
+    await Promise.resolve();
     expect(onChange).toHaveBeenCalledTimes(1);
   });
 
