@@ -2,9 +2,9 @@
 
 Reusable **single-elimination** tournament brackets. Vanilla ESM core, optional jQuery adapter, CSS-variable themes. Display-only (read-only) — winners come from your data.
 
-**Live demo:** [alicamargo.github.io/tournament-brackets](https://alicamargo.github.io/tournament-brackets/) ([jQuery](https://alicamargo.github.io/tournament-brackets/jquery.html) · [React](https://alicamargo.github.io/tournament-brackets/react.html))
+**Live demo:** [alicamargo.github.io/tournament-brackets](https://alicamargo.github.io/tournament-brackets/) ([jQuery](https://alicamargo.github.io/tournament-brackets/jquery.html) · [React](https://alicamargo.github.io/tournament-brackets/react.html) · [Angular](https://alicamargo.github.io/tournament-brackets/angular.html))
 
-> Evolved from [jquery-brackets](https://github.com/aliCamargo/jquery-brackets). This project is framework-agnostic; a thin React adapter is available, with Vue / Angular on the roadmap.
+> Evolved from [jquery-brackets](https://github.com/aliCamargo/jquery-brackets). This project is framework-agnostic; thin React and Angular adapters are available, with Vue on the roadmap.
 
 ## Install
 
@@ -164,6 +164,49 @@ Keep `rounds` referentially stable (for example, memoize derived data) when `onC
 
 See the [React demo](https://alicamargo.github.io/tournament-brackets/react.html) (or `demo/react.html` locally).
 
+## Usage (Angular)
+
+Peer dependency: `@angular/core` >= 17 (standalone apps).
+
+```typescript
+import { Component, ViewChild } from '@angular/core';
+import { BracketsComponent } from '@ali.camargo/tournament-brackets/angular';
+import type { BracketsState } from '@ali.camargo/tournament-brackets';
+import '@ali.camargo/tournament-brackets/style.css';
+
+@Component({
+  standalone: true,
+  imports: [BracketsComponent],
+  template: `
+    <tb-brackets
+      [rounds]="rounds"
+      theme="dark"
+      [titles]="true"
+      [thirdPlace]="true"
+      [roundNav]="true"
+      (change)="onChange($event)"
+      (roundChange)="onRoundChange($event)"
+    />
+  `,
+})
+export class TournamentPage {
+  @ViewChild(BracketsComponent) brackets!: BracketsComponent;
+  rounds = /* ... */;
+
+  onChange(state: BracketsState) {
+    console.log(state);
+  }
+
+  onRoundChange(index: number) {
+    console.log(index);
+  }
+}
+```
+
+Inputs mirror vanilla `BracketsOptions`, plus `class` / `style` on the host wrapper. Outputs: `change`, `roundChange`. `@ViewChild(BracketsComponent)` exposes `getState`, `setRounds`, `setViewFromRound`, and `destroy`.
+
+See the [Angular demo](https://alicamargo.github.io/tournament-brackets/angular.html) (or `demo/angular.html` locally).
+
 ## Options
 
 | Option | Default | Description |
@@ -203,7 +246,8 @@ Short left-to-right entrance on paint (including round-nav changes). Matches wit
 ```bash
 pnpm install
 pnpm test
-pnpm dev          # / = vanilla, /jquery.html = jQuery, /react.html = React
+pnpm dev          # vanilla, jQuery, React demos
+pnpm dev:angular  # Angular demo (runs ngc for demo/angular-main.ts first)
 pnpm build        # dist/ ESM + UMD + CSS
 pnpm build:demo   # static demo site (GitHub Pages)
 ```
@@ -215,7 +259,7 @@ Thin framework adapters on the same core (no UI rewrite):
 
 1. ~~React~~ — available via `@ali.camargo/tournament-brackets/react`
 2. Vue
-3. Angular
+3. ~~Angular~~ — available via `@ali.camargo/tournament-brackets/angular`
 ## Predecessor
 
 Active development moved here from **jquery-brackets**. The old repo remains as a historical reference.

@@ -14,7 +14,11 @@
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noEmitOnError": true,
+    "experimentalDecorators": true,
     "types": []
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"]
 }

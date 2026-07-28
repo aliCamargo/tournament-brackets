@@ -21,5 +21,7 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    include: ['tests/**/*.test.{js,jsx,ts}'],
+    exclude: ['tests/angular-adapter.test.ts'],
   },
 });
