@@ -2,9 +2,9 @@
 
 Reusable **single-elimination** tournament brackets. Vanilla ESM core, optional jQuery adapter, CSS-variable themes. Display-only (read-only) — winners come from your data.
 
-**Live demo:** [alicamargo.github.io/tournament-brackets](https://alicamargo.github.io/tournament-brackets/) ([jQuery](https://alicamargo.github.io/tournament-brackets/jquery.html) · [React](https://alicamargo.github.io/tournament-brackets/react.html) · [Angular](https://alicamargo.github.io/tournament-brackets/angular.html))
+**Live demo:** [alicamargo.github.io/tournament-brackets](https://alicamargo.github.io/tournament-brackets/) ([jQuery](https://alicamargo.github.io/tournament-brackets/jquery.html) · [React](https://alicamargo.github.io/tournament-brackets/react.html) · [Angular](https://alicamargo.github.io/tournament-brackets/angular.html) · [Vue](https://alicamargo.github.io/tournament-brackets/vue.html))
 
-> Evolved from [jquery-brackets](https://github.com/aliCamargo/jquery-brackets). This project is framework-agnostic; thin React and Angular adapters are available, with Vue on the roadmap.
+> Evolved from [jquery-brackets](https://github.com/aliCamargo/jquery-brackets). This project is framework-agnostic; thin React, Vue, and Angular adapters are available.
 
 ## Install
 
@@ -207,6 +207,39 @@ Inputs mirror vanilla `BracketsOptions`, plus `class` / `style` on the host wrap
 
 See the [Angular demo](https://alicamargo.github.io/tournament-brackets/angular.html) (or `demo/angular.html` locally).
 
+## Usage (Vue)
+
+Peer dependency: `vue` >= 3.5.
+
+```vue
+<script setup>
+import { ref } from 'vue'
+import { Brackets } from '@ali.camargo/tournament-brackets/vue'
+import '@ali.camargo/tournament-brackets/style.css'
+
+const api = ref(null)
+</script>
+
+<template>
+  <Brackets
+    ref="api"
+    :rounds="rounds"
+    theme="dark"
+    :titles="true"
+    :third-place="true"
+    :round-nav="true"
+    @change="onChange"
+    @round-change="onRoundChange"
+  />
+</template>
+```
+
+Props mirror vanilla `BracketsOptions` (minus callbacks), plus `class` / `className` / `style` on the host element. Emits: `change`, `roundChange`. The template `ref` exposes `getState`, `setRounds`, `setViewFromRound`, and `destroy`.
+
+Keep `rounds` referentially stable when `@change` updates parent state; a new `rounds` identity triggers a live `setRounds` update. `viewFromRound` is an initial and imperative-synced value rather than a fully controlled prop (same caveat as React).
+
+See the [Vue demo](https://alicamargo.github.io/tournament-brackets/vue.html) (or `demo/vue.html` locally).
+
 ## Options
 
 | Option | Default | Description |
@@ -246,7 +279,7 @@ Short left-to-right entrance on paint (including round-nav changes). Matches wit
 ```bash
 pnpm install
 pnpm test
-pnpm dev          # vanilla, jQuery, React, and Angular demos (/angular.html)
+pnpm dev          # vanilla, jQuery, React, Angular, and Vue demos (/vue.html)
 pnpm build        # dist/ ESM + UMD + CSS
 pnpm build:demo   # static demo site (GitHub Pages)
 ```
@@ -257,7 +290,7 @@ pnpm build:demo   # static demo site (GitHub Pages)
 Thin framework adapters on the same core (no UI rewrite):
 
 1. ~~React~~ — available via `@ali.camargo/tournament-brackets/react`
-2. Vue
+2. ~~Vue~~ — available via `@ali.camargo/tournament-brackets/vue`
 3. ~~Angular~~ — available via `@ali.camargo/tournament-brackets/angular`
 ## Predecessor
 

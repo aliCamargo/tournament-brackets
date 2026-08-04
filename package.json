@@ -3,7 +3,7 @@
   "version": "1.4.0",
   "type": "module",
   "packageManager": "pnpm@10.33.2",
-  "description": "Reusable single-elimination tournament brackets — vanilla ESM core with optional jQuery, React, and Angular adapters",
+  "description": "Reusable single-elimination tournament brackets — vanilla ESM core with optional jQuery, React, Angular, and Vue adapters",
   "main": "./dist/brackets.umd.cjs",
   "module": "./dist/brackets.js",
   "types": "./dist/index.d.ts",
@@ -39,6 +39,11 @@
       "import": "./dist/angular-adapter.js",
       "require": "./dist/angular-adapter.umd.cjs"
     },
+    "./vue": {
+      "types": "./dist/adapters/vue.adapter.d.ts",
+      "import": "./dist/vue-adapter.js",
+      "require": "./dist/vue-adapter.umd.cjs"
+    },
     "./types": {
       "types": "./dist/types.d.ts"
     },
@@ -54,7 +59,7 @@
     "dev": "vite --config vite.demo.config.js",
     "build:demo": "vite build --config vite.demo.config.js && ngc -p tsconfig.demo-ngc.json && vite build --config vite.demo-angular.config.js",
     "typecheck": "tsc --noEmit",
-    "build": "vite build && vite build --config vite.jquery.config.js && vite build --config vite.react.config.js && ngc -p tsconfig.ngc.json && vite build --config vite.angular.config.js && tsc --emitDeclarationOnly",
+    "build": "vite build && vite build --config vite.jquery.config.js && vite build --config vite.react.config.js && ngc -p tsconfig.ngc.json && vite build --config vite.angular.config.js && vite build --config vite.vue.config.js && tsc --emitDeclarationOnly",
     "test": "vitest run --config vite.config.js && vitest run --config vitest.angular.config.js",
     "test:watch": "vitest"
   },
@@ -62,7 +67,8 @@
     "@angular/core": ">=17.0.0",
     "jquery": ">=3.0.0",
     "react": ">=17.0.0",
-    "react-dom": ">=17.0.0"
+    "react-dom": ">=17.0.0",
+    "vue": ">=3.5.0"
   },
   "peerDependenciesMeta": {
     "jquery": {
@@ -75,6 +81,9 @@
       "optional": true
     },
     "@angular/core": {
+      "optional": true
+    },
+    "vue": {
       "optional": true
     }
   },
@@ -94,6 +103,7 @@
     "@types/react": "^17.0.93",
     "@types/react-dom": "^17.0.26",
     "@vitejs/plugin-react": "^4.7.0",
+    "@vue/test-utils": "^2.4.11",
     "jquery": "^3.7.1",
     "jsdom": "^24.0.0",
     "react": "^17.0.2",
@@ -102,6 +112,7 @@
     "typescript": "^5.8.3",
     "vite": "^6.4.3",
     "vitest": "^2.0.0",
+    "vue": "^3.5.40",
     "zone.js": "~0.15.1"
   },
   "keywords": [
@@ -111,7 +122,8 @@
     "vanilla-js",
     "jquery",
     "react",
-    "angular"
+    "angular",
+    "vue"
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Ali Camargo"
