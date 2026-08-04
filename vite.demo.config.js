@@ -74,6 +74,7 @@ export default defineConfig(({ command }) => ({
         jquery: resolve(repoRoot, 'demo/jquery.html'),
         react: resolve(repoRoot, 'demo/react.html'),
         angular: resolve(repoRoot, 'demo/angular.html'),
+        vue: resolve(repoRoot, 'demo/vue.html'),
       },
     },
   },
@@ -87,6 +88,7 @@ export default defineConfig(({ command }) => ({
       '@angular/common',
       'react',
       'react-dom',
+      'vue',
     ],
   },
 }));
