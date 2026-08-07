@@ -1,6 +1,6 @@
 {
   "name": "@ali.camargo/tournament-brackets",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "type": "module",
   "packageManager": "pnpm@10.33.2",
   "description": "Reusable single-elimination tournament brackets — vanilla ESM core with optional jQuery, React, Angular, and Vue adapters",
